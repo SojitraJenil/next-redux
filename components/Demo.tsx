@@ -9,7 +9,10 @@ const Demo: React.FC<DemoProps> = ({ src, alt, ...rest }) => {
   return (
     <div>
       <img
-        src={require("../src/assets/ReduxFlow.gif")}
+        className="h-screen mx-auto"
+        src={
+          "https://miro.medium.com/v2/resize:fit:5120/1*zG7xYxuqGdmIFM7sjXmCvA.jpeg"
+        }
         alt={"Redux Flow"}
         {...rest}
       />

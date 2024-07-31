@@ -1,11 +1,10 @@
-// redux/reducers.js
 import { combineReducers } from "@reduxjs/toolkit";
-import counterReducer from "./slices/counterSlice";
+import productReducer from "./slices/productSlice";
 
 const rootReducer = combineReducers({
-  counter: counterReducer,
-  productDetail: "OK1",
-  setProductDetail: "OK",
+  product: productReducer,
 });
+
+export type RootState = ReturnType<typeof rootReducer>;
 
 export default rootReducer;

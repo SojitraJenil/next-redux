@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-const pages = ["Product", "Counter", "Demo"];
+const pages = ["Product", "Demo"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Navbar() {
