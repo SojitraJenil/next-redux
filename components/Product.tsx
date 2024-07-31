@@ -74,7 +74,7 @@ export default function Product() {
                     Add to Cart
                   </button>
                   <button className="flex bg-slate-600 text-white px-5 mx-auto py-2 rounded-lg justify-center align-middle text-center self-center">
-                    Watch
+                    Buy
                   </button>
                 </div>
                 <CardActions disableSpacing>
