@@ -12,10 +12,10 @@ import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../redux/store";
-import { fetchProduct } from "../redux/slices/productSlice";
+import { addProduct, fetchProduct } from "../redux/slices/productSlice";
 import { RootState } from "../redux/reducers";
 
 export default function Product() {
@@ -23,68 +23,47 @@ export default function Product() {
   const products = useSelector(
     (state: RootState) => state.product.product.products
   );
-
+  const CartedProduct = useSelector(
+    (carted: RootState) => carted.product.cartedProduct
+  );
   useEffect(() => {
     dispatch(fetchProduct());
   }, [dispatch]);
 
+  const ProductAddToCart = (id: any) => {
+    dispatch(addProduct(id));
+  };
+
   return (
     <div className="container py-3 mx-auto flex justify-center">
-      <div className="w-full px-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-items-center">
+      <div className="w-full px-4 ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 justify-items-center">
           {products &&
             products.map((item: any, index: number) => (
-              <Card key={index} sx={{ maxWidth: 345 }}>
-                <CardHeader
-                  avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                      {item.title.charAt(0)}
-                    </Avatar>
-                  }
-                  action={
-                    <IconButton aria-label="settings">
-                      <MoreVertIcon />
-                    </IconButton>
-                  }
-                  title={item.title}
-                  subheader={item.category}
-                />
+              <Card key={index} className="bg-slate-100" sx={{ maxWidth: 280 }}>
+                <span className="text-sm">{item.title}</span>
+                <br />
+                <span className="text-sm">{item.category}</span>
                 <CardMedia
                   component="img"
                   image={item.images[0]}
                   alt={item.title}
-                  className="w-[360px] h-[320px] object-cover"
+                  className="w-[300px] h-[260px] object-cover"
                 />
                 <CardContent>
-                  <Typography variant="body2" color="text.secondary">
-                    {item.description}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Price: ${item.price}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Rating: {item.rating}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Stock: {item.stock}
-                  </Typography>
+                  Price: ${item.price} <br />
                 </CardContent>
-                <div className="flex">
-                  <button className="flex bg-slate-600 text-white px-5 mx-auto py-2 rounded-lg justify-center align-middle text-center self-center">
+                <div className="flex py-2">
+                  <button
+                    onClick={() => ProductAddToCart(item.id)}
+                    className="flex text-sm bg-slate-600 text-white px-5 mx-auto py-2 rounded-lg justify-center align-middle text-center self-center"
+                  >
                     Add to Cart
                   </button>
                   <button className="flex bg-slate-600 text-white px-5 mx-auto py-2 rounded-lg justify-center align-middle text-center self-center">
                     Buy
                   </button>
                 </div>
-                <CardActions disableSpacing>
-                  <IconButton aria-label="add to favorites">
-                    <FavoriteIcon />
-                  </IconButton>
-                  <IconButton aria-label="share">
-                    <ShareIcon />
-                  </IconButton>
-                </CardActions>
               </Card>
             ))}
         </div>

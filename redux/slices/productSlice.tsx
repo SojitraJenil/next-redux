@@ -4,6 +4,7 @@ interface ProductState {
   product: any;
   status: string;
   error: string | null;
+  cartedProduct: any;
 }
 
 // Define the initial state
@@ -11,6 +12,7 @@ const initialState: ProductState = {
   product: {},
   status: "idle",
   error: null,
+  cartedProduct: [],
 };
 
 // Define an async thunk for fetching product data
@@ -27,7 +29,15 @@ export const fetchProduct = createAsyncThunk(
 const productSlice = createSlice({
   name: "product",
   initialState,
-  reducers: {},
+  reducers: {
+    addProduct: (cartedProduct, payload) => {
+      const updatedProducts = new Set([
+        ...cartedProduct.cartedProduct,
+        payload.payload,
+      ]);
+      cartedProduct.cartedProduct = Array.from(updatedProducts);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProduct.pending, (state) => {
@@ -43,6 +53,8 @@ const productSlice = createSlice({
       });
   },
 });
+
+export const { addProduct } = productSlice.actions;
 
 // Export the reducer
 export default productSlice.reducer;

@@ -1,5 +1,9 @@
+/* eslint-disable react/jsx-key */
 import React, { useState } from "react";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/reducers";
 
 const pages = ["Product", "Demo"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -8,6 +12,10 @@ function Navbar() {
   const [navOpen, setNavOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
+  const router = useRouter();
+  const CartedProduct = useSelector(
+    (carted: RootState) => carted.product.cartedProduct
+  );
   const toggleNavMenu = () => setNavOpen(!navOpen);
 
   const closeNavMenu = () => setNavOpen(false);
@@ -23,13 +31,15 @@ function Navbar() {
 
           <div className="hidden md:flex md:items-center">
             {pages.map((page) => (
-              <a
-                key={page}
-                href={`/${page}`}
+              <button
+                onClick={() => {
+                  router.push(`/${page}`);
+                  console.log("object", page);
+                }}
                 className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
               >
                 {page}
-              </a>
+              </button>
             ))}
           </div>
 
@@ -55,9 +65,16 @@ function Navbar() {
           </div>
 
           <div className="hidden md:flex md:items-center">
-            <button className="text-white -4 hover:text-white focus:outline-none">
-              <ShoppingCartIcon />
-            </button>
+            <div className="relative inline-block">
+              <button className="text-white hover:text-white focus:outline-none flex items-center">
+                <ShoppingCartIcon className="w-6 h-6" />
+              </button>
+              {CartedProduct.length > 0 && (
+                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-blue-800 rounded-full transform translate-x-1/2 -translate-y-1/2">
+                  {CartedProduct.length}
+                </span>
+              )}
+            </div>
             {userMenuOpen && (
               <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div
