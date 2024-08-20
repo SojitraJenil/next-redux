@@ -1,9 +1,9 @@
-/* eslint-disable react/jsx-key */
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/reducers";
+import Sidebar from "./Sidebar";
 
 const pages = ["Product", "Demo"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -11,18 +11,30 @@ const settings = ["Profile", "Account", "Dashboard", "Logout"];
 function Navbar() {
   const [navOpen, setNavOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const router = useRouter();
   const CartedProduct = useSelector(
     (carted: RootState) => carted.product.cartedProduct
   );
+
+  const previousLength = useRef(CartedProduct.length);
+
+  useEffect(() => {
+    if (CartedProduct.length > previousLength.current) {
+      setSidebarOpen(true);
+    }
+    previousLength.current = CartedProduct.length;
+  }, [CartedProduct]);
+
   const toggleNavMenu = () => setNavOpen(!navOpen);
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   const closeNavMenu = () => setNavOpen(false);
   const closeUserMenu = () => setUserMenuOpen(false);
 
   return (
-    <nav className="bg-red-800">
+    <nav className="bg-red-800 sticky w-[100%] top-0">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between h-16">
           <div className="flex-shrink-0 flex items-center text-white text-[22px]">
@@ -32,9 +44,9 @@ function Navbar() {
           <div className="hidden md:flex md:items-center">
             {pages.map((page) => (
               <button
+                key={page}
                 onClick={() => {
                   router.push(`/${page}`);
-                  console.log("object", page);
                 }}
                 className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
               >
@@ -66,7 +78,10 @@ function Navbar() {
 
           <div className="hidden md:flex md:items-center">
             <div className="relative inline-block">
-              <button className="text-white hover:text-white focus:outline-none flex items-center">
+              <button
+                onClick={toggleSidebar}
+                className="text-white hover:text-white focus:outline-none flex items-center"
+              >
                 <ShoppingCartIcon className="w-6 h-6" />
               </button>
               {CartedProduct.length > 0 && (
@@ -117,6 +132,7 @@ function Navbar() {
           </div>
         </div>
       )}
+      <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
     </nav>
   );
 }

@@ -1,17 +1,7 @@
 /* eslint-disable react/jsx-key */
-import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../redux/store";
@@ -20,12 +10,8 @@ import { RootState } from "../redux/reducers";
 
 export default function Product() {
   const dispatch = useDispatch<AppDispatch>();
-  const products = useSelector(
-    (state: RootState) => state.product.product.products
-  );
-  const CartedProduct = useSelector(
-    (carted: RootState) => carted.product.cartedProduct
-  );
+  const products = useSelector((state: RootState) => state.product.product);
+
   useEffect(() => {
     dispatch(fetchProduct());
   }, [dispatch]);
@@ -40,7 +26,11 @@ export default function Product() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 justify-items-center">
           {products &&
             products.map((item: any, index: number) => (
-              <Card key={index} className="bg-slate-100" sx={{ maxWidth: 280 }}>
+              <Card
+                key={index}
+                className="bg-slate-100"
+                sx={{ maxWidth: 280, padding: 1 }}
+              >
                 <span className="text-sm">{item.title}</span>
                 <br />
                 <span className="text-sm">{item.category}</span>
