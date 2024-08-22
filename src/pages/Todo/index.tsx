@@ -7,7 +7,6 @@ function index() {
   return (
     <div>
       <Navbar />
-      {/* <Demo /> */}
       <Counter />
     </div>
   );
