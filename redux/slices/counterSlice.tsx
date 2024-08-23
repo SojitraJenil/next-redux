@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import apiClient from "../../apiClient";
+
 interface Todo {
   _id: string;
   title: string;
@@ -25,7 +26,7 @@ export const addTodoAsync = createAsyncThunk(
   "counter/addTodoAsync",
   async (todo: string, { rejectWithValue }) => {
     try {
-      const response = await axios.post("http://localhost:3000/api/posts", {
+      const response = await apiClient.post("/posts", {
         title: todo,
         content: "todo",
       });
@@ -41,7 +42,7 @@ export const fetchTodosAsync = createAsyncThunk(
   "counter/fetchTodosAsync",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("http://localhost:3000/api/gets");
+      const response = await apiClient.get("/gets");
       return response.data.data;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || "Failed to fetch todos");
@@ -54,7 +55,7 @@ export const deleteTodoAsync = createAsyncThunk(
   "counter/deleteTodoAsync",
   async (id: string, { rejectWithValue }) => {
     try {
-      await axios.delete(`http://localhost:3000/api/delete/${id}`);
+      await apiClient.delete(`/delete/${id}`);
       return id; // Return the id of the deleted todo
     } catch (err: any) {
       return rejectWithValue(err.response?.data || "Failed to delete todo");
@@ -67,9 +68,8 @@ export const updateTodoAsync = createAsyncThunk(
   "counter/updateTodoAsync",
   async (updatedTodo: Todo, { rejectWithValue }) => {
     try {
-      console.log("updatedTodo", updatedTodo);
-      const response = await axios.put(
-        `http://localhost:3000/api/update/${updatedTodo._id}`,
+      const response = await apiClient.put(
+        `/update/${updatedTodo._id}`,
         updatedTodo
       );
       return response.data; // Adjust this if needed based on your API response structure
@@ -85,7 +85,6 @@ const counterSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-
       .addCase(addTodoAsync.pending, (state) => {
         state.status = "loading";
       })
