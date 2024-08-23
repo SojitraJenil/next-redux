@@ -1,8 +1,7 @@
-// apiClient.ts
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "/api", // Use relative URL to work with both development and production
   headers: {
     "Content-Type": "application/json",
   },
