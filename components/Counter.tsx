@@ -101,7 +101,14 @@ const Counter: React.FC = () => {
           <span className="sr-only">Loading...</span>
         </div>
       )}
-      {status === "failed" && <p>Error: {error}</p>}
+      {status === "failed" && (
+        <>
+          <p>
+            Error: {typeof error === "string" ? error : JSON.stringify(error)}
+          </p>
+          {console.log(error)}
+        </>
+      )}
       {todos && todos.length > 0 && (
         <div className="w-full max-w-md mt-8 bg-white rounded-lg shadow-md p-4">
           <ul className="space-y-4">
