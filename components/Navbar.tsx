@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux/reducers";
 import Sidebar from "./Sidebar";
 
-const pages = ["Product", "Todo", "Socket"];
+const pages = ["Product", "Todo", "Socket", "Prec", "React"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Navbar() {
