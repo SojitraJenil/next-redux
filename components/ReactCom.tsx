@@ -39,6 +39,7 @@ function ReactCom() {
         ? { ...item, title: UpdateData.title, stock: UpdateData.stock }
         : item
     );
+    console.log("updatedRecord :>> ", updatedRecord);
     setData(updatedRecord);
   };
 
